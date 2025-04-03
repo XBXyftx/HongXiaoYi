@@ -1,19 +1,23 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppStorageV2, window } from '@kit.ArkUI';
-import { GetBreakPointSystem, GET_BREAK_POINT_SYSTEM } from 'common';
+import { GetBreakPointSystem, GET_BREAK_POINT_SYSTEM, logger } from 'common';
 
 const DOMAIN = 0x0000;
+const ENTRYABILITY_LOG_TAG = 'EntryAbility:  '
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');
-    AppStorageV2.connect(GetBreakPointSystem,GET_BREAK_POINT_SYSTEM,()=>new GetBreakPointSystem())
+    AppStorageV2.connect(GetBreakPointSystem,GET_BREAK_POINT_SYSTEM,()=>new GetBreakPointSystem())!.getBreakPointSystem().start()
+    logger.warn(ENTRYABILITY_LOG_TAG+'断点系统已经启动')
   }
 
   onDestroy(): void {
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');
+    AppStorageV2.connect(GetBreakPointSystem,GET_BREAK_POINT_SYSTEM,()=>new GetBreakPointSystem())!.getBreakPointSystem().stop()
+    logger.warn(ENTRYABILITY_LOG_TAG+'断点系统已经关闭')
   }
 
   onWindowStageCreate(windowStage: window.WindowStage): void {
