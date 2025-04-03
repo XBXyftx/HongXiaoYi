@@ -1,2 +1,3 @@
-export { MainPage } from './src/main/ets/components/MainPage';
-export {logger} from './src/main/ets/logger/Logger'
+export * from './src/main/ets/components/index';
+export * from './src/main/ets/modules/index'
+export * from './src/main/ets/utils/index'
