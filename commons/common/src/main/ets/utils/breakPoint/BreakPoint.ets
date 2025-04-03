@@ -1,7 +1,9 @@
 import { Breakpoint, BreakpointType } from "../../modules/breakPoint/BreakPointSystem"
-import { mediaquery } from "@kit.ArkUI"
+import { AppStorageV2, mediaquery } from "@kit.ArkUI"
 import { BreakpointState } from "../../modules/breakPoint/BreakpointState"
+import { logger } from ".."
 
+const BREAK_POINT_SYSTEM_LOG_TAG = 'BreakpointSystem:  '
 /**
  * 断点系统核心类（单例模式）
  * 负责管理设备断点状态及监听逻辑
@@ -78,12 +80,14 @@ export class BreakpointSystem {
           this.updateAllState(breakpoint.name)  // 触发状态更新
         }
       })
+      logger.info(BREAK_POINT_SYSTEM_LOG_TAG+`第${index}个断点状态对象启动完成`)
     })
   }
 
   /** 更新所有观察者状态 */
   private updateAllState(type: BreakpointType): void {
     this._states.forEach(state => state.update(type))  // 遍历执行更新
+    logger.info(BREAK_POINT_SYSTEM_LOG_TAG+'全部断点状态更新完成')
   }
 
   /** 停止监听并清理资源 */
@@ -94,6 +98,7 @@ export class BreakpointSystem {
       }
     })
     this._states.clear()  // 清空观察者集合
+    logger.info(BREAK_POINT_SYSTEM_LOG_TAG+'断点状态对象全部关闭')
   }
 }
 
