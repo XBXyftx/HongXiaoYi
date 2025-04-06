@@ -12,6 +12,7 @@ export default class EntryAbility extends UIAbility {
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');
     AppStorageV2.connect(GetBreakPointSystem,GET_BREAK_POINT_SYSTEM,()=>new GetBreakPointSystem())!.getBreakPointSystem().start()
     logger.warn(ENTRYABILITY_LOG_TAG+'断点系统已经启动')
+    AppStorageV2
   }
 
   onDestroy(): void {
