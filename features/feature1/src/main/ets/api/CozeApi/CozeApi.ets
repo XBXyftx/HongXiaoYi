@@ -1,21 +1,23 @@
-import { AdditionalMessages_Role, ICoZePostBody,
+import {
+  AdditionalMessages_Role,
+  ICoZePostBody,
   IHXYCozeMessagesItem,
-  IHXYConversationMessage_DeltaData, MessageModel } from "../../modules";
+  IHXYConversationMessage_DeltaData,
+  MessageModel
+} from "../../modules";
 import { AppStorageV2, promptAction } from "@kit.ArkUI";
 import { rcp } from "@kit.RemoteCommunicationKit";
 import { util } from "@kit.ArkTS";
 import { BusinessError } from "@kit.BasicServicesKit";
-import {logger} from 'common'
+import { logger } from 'common'
+import { MSG } from '../../constants/index'
 
-const MSG = 'currentMsg';
+
 /**
  * 当前正在进行接收的信息对象
  */
 const CurrentMsg: MessageModel = AppStorageV2.connect(MessageModel, MSG, () => new MessageModel())!;
-CurrentMsg.type = 0
-CurrentMsg.hasEnd = true
-CurrentMsg.currentIndex = 0
-CurrentMsg.content = ''
+
 
 const sessionConfig: rcp.SessionConfiguration = {
   headers: {
@@ -37,24 +39,33 @@ const sessionConfig: rcp.SessionConfiguration = {
           console.log('onDataReceive原始数据：  ' + s)
           try {
             if (s.includes('conversation.message.delta')) {
-              s.split('data: ').forEach((item:string,index)=>{
-                const data = s.split('data: ')[(index*2)+1]
-                const event = s.split('data: ')[index*2]
+              s.split('data: ').forEach((item: string, index) => {
+                if (index === 1) {
+                const data = item.split('event: ')[0]
                 logger.info('____________________________')
-                logger.info('读取到的event： '+event)
-                logger.info('读取到的data： '+data)
+                logger.info('读取到的data： ' + data)
                 const message_data = JSON.parse(data) as IHXYConversationMessage_DeltaData
                 logger.info('onDataReceive写入： ' + message_data.content)
                 CurrentMsg.content += message_data.content
                 logger.info('msgModel.hasEnd= ' + CurrentMsg.hasEnd)
                 logger.info('____________________________')
+                }else if (index === 2){
+                  const data = item
+                  logger.info('____________________________')
+                  logger.info('读取到的data： ' + data)
+                  const message_data = JSON.parse(data) as IHXYConversationMessage_DeltaData
+                  logger.info('onDataReceive写入： ' + message_data.content)
+                  CurrentMsg.content += message_data.content
+                  logger.info('msgModel.hasEnd= ' + CurrentMsg.hasEnd)
+                  logger.info('____________________________')
+                }
               })
 
             } else if (s.includes('done')) {
               CurrentMsg.hasEnd = true
             }
-          }catch (err){
-            logger.error('onDataReceive捕获异常: '+err)
+          } catch (err) {
+            logger.error('onDataReceive捕获异常: ' + err)
           }
 
         }
@@ -64,20 +75,18 @@ const sessionConfig: rcp.SessionConfiguration = {
 }
 
 
-const ai: ICoZePostBody = {
-  workflow_id: '7487986803871760399',
-  additional_messages: [
-    {
-      role: AdditionalMessages_Role.User,
-      content: '鸿蒙的一多能力是什么',
-      content_type: 'string'
-    } as IHXYCozeMessagesItem
-  ],
-  parameters: new Map<string, string>([['CONVERSATION_NAME', 'HXY'+Date.now()]])
-
-}
-
 export function requestCozeAi() {
+  const ai: ICoZePostBody = {
+    workflow_id: '7487986803871760399',
+    additional_messages: [
+      {
+        role: AdditionalMessages_Role.User,
+        content: '鸿蒙的一多能力是什么',
+        content_type: 'string'
+      } as IHXYCozeMessagesItem
+    ],
+    parameters: new Map<string, string>([['CONVERSATION_NAME', 'HXY' + Date.now()]])
+  }
   promptAction.showToast({
     message: '发送请求成功'
   })
@@ -88,6 +97,7 @@ export function requestCozeAi() {
       logger.error(err.message)
     })
     .finally(() => {
+      logger.info('requestCozeAi:  ' + '数据传输已完成')
       session.close()
       logger.warn('session已关闭')
     })
