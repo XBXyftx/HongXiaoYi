@@ -5,6 +5,7 @@ import { AppStorageV2, promptAction } from "@kit.ArkUI";
 import { rcp } from "@kit.RemoteCommunicationKit";
 import { util } from "@kit.ArkTS";
 import { BusinessError } from "@kit.BasicServicesKit";
+import {logger} from 'common'
 
 const MSG = 'currentMsg';
 /**
@@ -39,12 +40,14 @@ const sessionConfig: rcp.SessionConfiguration = {
               s.split('data: ').forEach((item:string,index)=>{
                 const data = s.split('data: ')[(index*2)+1]
                 const event = s.split('data: ')[index*2]
-                console.log('读取到的event： '+event)
-                console.log('读取到的data： '+data)
+                logger.info('____________________________')
+                logger.info('读取到的event： '+event)
+                logger.info('读取到的data： '+data)
                 const message_data = JSON.parse(data) as IHXYConversationMessage_DeltaData
-                console.log('onDataReceive写入： ' + message_data.content)
+                logger.info('onDataReceive写入： ' + message_data.content)
                 CurrentMsg.content += message_data.content
-                console.log('msgModel.hasEnd= ' + CurrentMsg.hasEnd)
+                logger.info('msgModel.hasEnd= ' + CurrentMsg.hasEnd)
+                logger.info('____________________________')
               })
 
             } else if (s.includes('done')) {
@@ -82,9 +85,10 @@ export function requestCozeAi() {
   const session = rcp.createSession(sessionConfig)
   session.post('https://api.coze.cn/v1/workflows/chat', ai)
     .catch((err: BusinessError) => {
-      console.error(err.message)
+      logger.error(err.message)
     })
     .finally(() => {
       session.close()
+      logger.warn('session已关闭')
     })
 }
