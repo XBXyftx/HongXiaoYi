@@ -1,6 +1,6 @@
 import { AdditionalMessages_Role, ICoZePostBody,
   IHXYCozeMessagesItem,
-  IHXYConversationMessage_DeltaData, MessageModel } from "../modules";
+  IHXYConversationMessage_DeltaData, MessageModel } from "../../modules";
 import { AppStorageV2, promptAction } from "@kit.ArkUI";
 import { rcp } from "@kit.RemoteCommunicationKit";
 import { util } from "@kit.ArkTS";
@@ -54,7 +54,7 @@ const sessionConfig: rcp.SessionConfiguration = {
               CurrentMsg.hasEnd = true
             }
           }catch (err){
-            console.error('onDataReceive捕获异常: '+err)
+            logger.error('onDataReceive捕获异常: '+err)
           }
 
         }

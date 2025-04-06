@@ -1,1 +1,1 @@
-export * from './CozeApi'
+export * from './CozeApi/CozeApi'
