@@ -3,20 +3,25 @@ import {
   ICoZePostBody,
   IHXYCozeMessagesItem,
   IHXYConversationMessage_DeltaData,
-  MessageModel
+  MessageModel,
+  MessageList
 } from "../../modules";
 import { AppStorageV2, promptAction } from "@kit.ArkUI";
 import { rcp } from "@kit.RemoteCommunicationKit";
 import { util } from "@kit.ArkTS";
 import { BusinessError } from "@kit.BasicServicesKit";
 import { logger } from 'common'
-import { MSG } from '../../constants/index'
+import { MESSAGE_LIST, MSG } from '../../constants/index'
 
 
 /**
  * 当前正在进行接收的信息对象
  */
-const CurrentMsg: MessageModel = AppStorageV2.connect(MessageModel, MSG, () => new MessageModel())!;
+const currentMsg: MessageModel = AppStorageV2.connect(MessageModel, MSG, () => new MessageModel())!;
+/**
+ * 当前需要发送给AI的聊天记录
+ */
+const messagesList: IHXYCozeMessagesItem[] = AppStorageV2.connect(MessageList, MESSAGE_LIST,()=>new MessageList())!.List
 
 
 const sessionConfig: rcp.SessionConfiguration = {
@@ -27,13 +32,13 @@ const sessionConfig: rcp.SessionConfiguration = {
   requestConfiguration: {
     transfer: {
       timeout: {
-        transferMs: 1200000
+        transferMs: 12000
       }
     },
     tracing: {
       httpEventsHandler: {
         onDataReceive: (inComingData: ArrayBuffer) => {
-          CurrentMsg.hasEnd = false
+          currentMsg.hasEnd = false
           const bufferFrom: Uint8Array = new Uint8Array(inComingData);
           const s = new util.TextDecoder().decodeToString(bufferFrom);
           console.log('onDataReceive原始数据：  ' + s)
@@ -46,8 +51,8 @@ const sessionConfig: rcp.SessionConfiguration = {
                 logger.info('读取到的data： ' + data)
                 const message_data = JSON.parse(data) as IHXYConversationMessage_DeltaData
                 logger.info('onDataReceive写入： ' + message_data.content)
-                CurrentMsg.content += message_data.content
-                logger.info('msgModel.hasEnd= ' + CurrentMsg.hasEnd)
+                currentMsg.content += message_data.content
+                logger.info('msgModel.hasEnd= ' + currentMsg.hasEnd)
                 logger.info('____________________________')
                 }else if (index === 2){
                   const data = item
@@ -55,14 +60,13 @@ const sessionConfig: rcp.SessionConfiguration = {
                   logger.info('读取到的data： ' + data)
                   const message_data = JSON.parse(data) as IHXYConversationMessage_DeltaData
                   logger.info('onDataReceive写入： ' + message_data.content)
-                  CurrentMsg.content += message_data.content
-                  logger.info('msgModel.hasEnd= ' + CurrentMsg.hasEnd)
+                  currentMsg.content += message_data.content
+                  logger.info('msgModel.hasEnd= ' + currentMsg.hasEnd)
                   logger.info('____________________________')
                 }
               })
-
             } else if (s.includes('done')) {
-              CurrentMsg.hasEnd = true
+              currentMsg.hasEnd = true
             }
           } catch (err) {
             logger.error('onDataReceive捕获异常: ' + err)
