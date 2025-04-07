@@ -11,7 +11,7 @@ import { rcp } from "@kit.RemoteCommunicationKit";
 import { util } from "@kit.ArkTS";
 import { BusinessError } from "@kit.BasicServicesKit";
 import { logger } from 'common'
-import { MESSAGE_LIST, MSG } from '../../constants/index'
+import { MESSAGE_LIST, MSG, STRING } from '../../constants/index'
 
 
 /**
@@ -21,9 +21,10 @@ const currentMsg: ViewMessageModel = AppStorageV2.connect(ViewMessageModel, MSG,
 /**
  * 当前需要发送给AI的聊天记录
  */
-const messagesList: HistoryMessageList = AppStorageV2.connect(HistoryMessageList, MESSAGE_LIST,()=>new HistoryMessageList())!
+const historyMessageList: HistoryMessageList = AppStorageV2.connect(HistoryMessageList, MESSAGE_LIST,()=>new HistoryMessageList())!
 
 
+const ON_DATA_RECEIVE = 'onDataReceive:  ';
 const sessionConfig: rcp.SessionConfiguration = {
   headers: {
     Authorization: "Bearer pat_iuGVoKCI6tgDJal7l7GFqJGCMLPkpXrcYaYBwc2icILL0gRLmAJ07xegxb1ZG0cN",
@@ -66,13 +67,16 @@ const sessionConfig: rcp.SessionConfiguration = {
                 }
               })
             } else if (s.includes('done')) {
-              logger.warn('onDataReceive:  '+ '当前对话流式传输结束，开始进行对话历史写入')
+              logger.warn(ON_DATA_RECEIVE+ '当前对话流式传输结束，开始进行对话历史写入')
               currentMsg.hasEnd = true
               const message = new CozeHistoryMessagesItem(HistoryMessages_Role.Assistant)
-
+              message.content_type= STRING
+              message.content=currentMsg.content!
+              historyMessageList.addMessage(message)
+              logger.warn(ON_DATA_RECEIVE+'历史添加完毕')
             }
           } catch (err) {
-            logger.error('onDataReceive捕获异常: ' + err)
+            logger.error(ON_DATA_RECEIVE+ 'onDataReceive捕获异常: ' + err)
           }
 
         }
@@ -85,13 +89,7 @@ const sessionConfig: rcp.SessionConfiguration = {
 export function requestCozeAi() {
   const ai: ICoZePostBody = {
     workflow_id: '7487986803871760399',
-    additional_messages: [
-      {
-        role: HistoryMessages_Role.User,
-        content: '鸿蒙的一多能力是什么',
-        content_type: 'string'
-      } as CozeHistoryMessagesItem
-    ],
+    additional_messages:historyMessageList.getList(),
     parameters: new Map<string, string>([['CONVERSATION_NAME', 'HXY' + Date.now()]])
   }
   promptAction.showToast({
