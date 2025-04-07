@@ -8,7 +8,7 @@ export interface ICoZePostBody<K = string, V = string> {
    * 你需要通过此字段传入本次对话中用户的问题，也就是对话流的输入参数 USER_INPUT 的值。
    * 可以同时传入多条历史消息，也就是本次对话的上下文。多条消息应按对话顺序排列，最后一条消息应为 role=user 的记录，也就是**本次对话**中用户的问题；其他消息为历史消息。
    */
-  additional_messages: IHXYCozeMessagesItem[]
+  additional_messages: CozeHistoryMessagesItem[]
   /**
    * 设置对话流的输入参数。
    * 对话流的输入参数  USER_INPUT 应在 additional_messages 中传入，在 parameters 中的 USER_INPUT 不生效。
@@ -61,15 +61,15 @@ export enum CoZePostBody_ExtKeys {
  * 暂不支持多模态（文本、图片、文件混合输入）、卡片等类型的内容。
  * 设置meta_data时应当设置两个泛型参数
  */
-export interface IHXYCozeMessagesItem<K = undefined, V = undefined> {
+export class CozeHistoryMessagesItem<K = undefined, V = undefined> {
   /**
    * 发送这条消息的实体。
    */
-  role: AdditionalMessages_Role
+  role: HistoryMessages_Role
   /**
    * 消息类型。默认为 question。
    */
-  type?: AdditionalMessages_Type
+  type?: HistoryMessages_Type
   /**
    * 消息的内容，仅支持纯文本。
    */
@@ -83,13 +83,39 @@ export interface IHXYCozeMessagesItem<K = undefined, V = undefined> {
    * 自定义键值对，应指定为 Map 对象格式。长度为 16 对键值对，其中键（key）的长度范围为 1～64 个字符，值（value）的长度范围为 1～512 个字符。
    */
   meta_data?: Map<K, V>
+
+  constructor(role: HistoryMessages_Role) {
+    this.role = role
+  }
+
+  public clone(): CozeHistoryMessagesItem<K, V> {
+    const newItem = new CozeHistoryMessagesItem<K, V>(this.role);
+
+    if (this.type !== undefined) {
+      newItem.type = this.type;
+    }
+
+    if (this.content !== undefined) {
+      newItem.content = this.content;
+    }
+
+    if (this.content_type !== undefined) {
+      newItem.content_type = this.content_type;
+    }
+
+    if (this.meta_data !== undefined) {
+      newItem.meta_data = new Map(this.meta_data.entries());
+    }
+
+    return newItem;
+  }
 }
 
 /**
  * user：代表该条消息内容是用户发送的。
  * assistant：代表该条消息内容是模型发送的。
  */
-export enum AdditionalMessages_Role {
+export enum HistoryMessages_Role {
   User = 'user',
   Assistant = 'assistant'
 }
@@ -100,7 +126,7 @@ export enum AdditionalMessages_Role {
  * function_call：智能体对话过程中调用函数（function call）的中间结果。
  * tool_response：调用工具 （function call）后返回的结果。
  */
-export enum AdditionalMessages_Type {
+export enum HistoryMessages_Type {
   Question = 'question',
   Answer = 'answer',
   Function_call = 'function_call',
@@ -111,7 +137,7 @@ export enum AdditionalMessages_Type {
  * 对话渲染数据模型
  */
 @ObservedV2
-export class MessageModel {
+export class ViewMessageModel {
   /**
    * 人类是1Ai是0
    */

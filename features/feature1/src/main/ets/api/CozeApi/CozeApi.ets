@@ -1,10 +1,10 @@
 import {
-  AdditionalMessages_Role,
+  HistoryMessages_Role,
   ICoZePostBody,
-  IHXYCozeMessagesItem,
+  CozeHistoryMessagesItem,
   IHXYConversationMessage_DeltaData,
-  MessageModel,
-  MessageList
+  ViewMessageModel,
+  HistoryMessageList
 } from "../../modules";
 import { AppStorageV2, promptAction } from "@kit.ArkUI";
 import { rcp } from "@kit.RemoteCommunicationKit";
@@ -17,11 +17,11 @@ import { MESSAGE_LIST, MSG } from '../../constants/index'
 /**
  * 当前正在进行接收的信息对象
  */
-const currentMsg: MessageModel = AppStorageV2.connect(MessageModel, MSG, () => new MessageModel())!;
+const currentMsg: ViewMessageModel = AppStorageV2.connect(ViewMessageModel, MSG, () => new ViewMessageModel())!;
 /**
  * 当前需要发送给AI的聊天记录
  */
-const messagesList: IHXYCozeMessagesItem[] = AppStorageV2.connect(MessageList, MESSAGE_LIST,()=>new MessageList())!.List
+const messagesList: HistoryMessageList = AppStorageV2.connect(HistoryMessageList, MESSAGE_LIST,()=>new HistoryMessageList())!
 
 
 const sessionConfig: rcp.SessionConfiguration = {
@@ -66,7 +66,10 @@ const sessionConfig: rcp.SessionConfiguration = {
                 }
               })
             } else if (s.includes('done')) {
+              logger.warn('onDataReceive:  '+ '当前对话流式传输结束，开始进行对话历史写入')
               currentMsg.hasEnd = true
+              const message = new CozeHistoryMessagesItem(HistoryMessages_Role.Assistant)
+
             }
           } catch (err) {
             logger.error('onDataReceive捕获异常: ' + err)
@@ -84,10 +87,10 @@ export function requestCozeAi() {
     workflow_id: '7487986803871760399',
     additional_messages: [
       {
-        role: AdditionalMessages_Role.User,
+        role: HistoryMessages_Role.User,
         content: '鸿蒙的一多能力是什么',
         content_type: 'string'
-      } as IHXYCozeMessagesItem
+      } as CozeHistoryMessagesItem
     ],
     parameters: new Map<string, string>([['CONVERSATION_NAME', 'HXY' + Date.now()]])
   }
