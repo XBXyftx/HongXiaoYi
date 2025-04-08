@@ -1,7 +1,7 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppStorageV2, window } from '@kit.ArkUI';
-import { GetBreakPointSystem, GET_BREAK_POINT_SYSTEM, logger } from 'common';
+import { env, GetBreakPointSystem, GET_BREAK_POINT_SYSTEM, logger } from 'common';
 import { HistoryMessageList, ViewMessageModel, MESSAGE_LIST, MSG } from 'feature1';
 
 const DOMAIN = 0x0000;
@@ -20,6 +20,12 @@ export default class EntryAbility extends UIAbility {
 
     AppStorageV2.connect(HistoryMessageList, MESSAGE_LIST,()=>new HistoryMessageList())
     logger.warn(ENTRYABILITY_LOG_TAG+'扣子对话历史记录数组初始化完成')
+
+    env.language = this.context.config.language;
+    env.colorMode = this.context.config.colorMode;
+    // env.fontSizeScale = this.context.config.fontSizeScale;
+    // env.fontWeightScale = this.context.config.fontWeightScale;
+    logger.warn(ENTRYABILITY_LOG_TAG+'env数据:  '+'env.language: '+env.language+' env.colorMode: '+env.colorMode)
   }
 
   onDestroy(): void {
@@ -33,7 +39,7 @@ export default class EntryAbility extends UIAbility {
     // Main window is created, set main page for this ability
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
 
-    windowStage.loadContent('pages/Index', (err) => {
+    windowStage.loadContent('pages/Main', (err) => {
       if (err.code) {
         hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));
         return;
@@ -55,5 +61,8 @@ export default class EntryAbility extends UIAbility {
   onBackground(): void {
     // Ability has back to background
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onBackground');
+    env.language = this.context.config.language;
+    env.colorMode = this.context.config.colorMode;
+    logger.warn(ENTRYABILITY_LOG_TAG+'env数据:  '+'env.language: '+env.language+' env.colorMode: '+env.colorMode)
   }
 }

@@ -5,7 +5,7 @@ import { ViewMessageModel } from 'feature1/src/main/ets/modules/CozeApiModules/C
 @ComponentV2
 struct Index {
   /**
-   * 渲染数组
+   * 渲染对话列表数组
    */
   @Local viewMessageList: ViewMessageModel[] = []
   @Local breakPointState: BreakpointState<Object> = BreakpointState.of({
