@@ -11,6 +11,10 @@
     {
       "name": "total_main_linearGradient_0point5",
       "value": "#FFFFFFFF"
+    },
+    {
+      "name": "test_fontcolor",
+      "value": "#FF000000"
     }
   ]
 }

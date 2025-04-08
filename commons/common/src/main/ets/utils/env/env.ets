@@ -4,7 +4,7 @@ import { logger } from '../../../../../Index';
 const ENV_LOG_TAG = 'Env:  '
 
 @ObservedV2
-class Env {
+export class Env {
   /**
    * 语言模式
    */
