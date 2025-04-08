@@ -3,6 +3,14 @@
     {
       "name": "start_window_background",
       "value": "#000000"
+    },
+    {
+      "name": "total_main_linearGradient_0",
+      "value": "#FF001A9F"
+    },
+    {
+      "name": "total_main_linearGradient_0point5",
+      "value": "#FF000000"
     }
   ]
 }

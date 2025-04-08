@@ -23,8 +23,6 @@ export default class EntryAbility extends UIAbility {
 
     env.language = this.context.config.language;
     env.colorMode = this.context.config.colorMode;
-    // env.fontSizeScale = this.context.config.fontSizeScale;
-    // env.fontWeightScale = this.context.config.fontWeightScale;
     logger.warn(ENTRYABILITY_LOG_TAG+'env数据:  '+'env.language: '+env.language+' env.colorMode: '+env.colorMode)
   }
 
