@@ -1,11 +1,25 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\ASUS\\.ohos\\config\\default_HongXiaoYi_0jqD7G6T5a9mKHQvJ4IFODz2vps_qeoQtSHBJfkdrtE=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001A316D5E065387B40C246E3DD282EB18F6024D1CFE2BAC71AC4234355F9E41FC81A510BFB20C17",
+          "profile": "C:\\Users\\ASUS\\.ohos\\config\\default_HongXiaoYi_0jqD7G6T5a9mKHQvJ4IFODz2vps_qeoQtSHBJfkdrtE=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\ASUS\\.ohos\\config\\default_HongXiaoYi_0jqD7G6T5a9mKHQvJ4IFODz2vps_qeoQtSHBJfkdrtE=.p12",
+          "storePassword": "0000001A45B540AAB932B56DFBA2F93CB7CC68FBC4A900F18AE4F967001B2BA93196332978B91AD8C85B"
+        }
+      }
+    ],
     "products": [
       {
         "name": "default",
         "signingConfig": "default",
-        "compatibleSdkVersion": "5.0.4(16)",
+        "compatibleSdkVersion": "5.0.2(14)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
           "strictMode": {
@@ -17,7 +31,7 @@
     ],
     "buildModeSet": [
       {
-        "name": "debug",
+        "name": "debug"
       },
       {
         "name": "release"
