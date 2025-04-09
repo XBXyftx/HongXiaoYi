@@ -1,7 +1,7 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppStorageV2, window } from '@kit.ArkUI';
-import { env, GetBreakPointSystem, GET_BREAK_POINT_SYSTEM, logger } from 'common';
+import { env, GetBreakPointSystem, GET_BREAK_POINT_SYSTEM, logger, NAV_PATH_STUCK } from 'common';
 import { HistoryMessageList, ViewMessageModel, MESSAGE_LIST, MSG } from 'feature1';
 
 const DOMAIN = 0x0000;
@@ -24,6 +24,9 @@ export default class EntryAbility extends UIAbility {
     env.language = this.context.config.language;
     env.colorMode = this.context.config.colorMode;
     logger.warn(ENTRYABILITY_LOG_TAG+'env数据:  '+'env.language: '+env.language+' env.colorMode: '+env.colorMode)
+
+    AppStorageV2.connect(NavPathStack,NAV_PATH_STUCK,()=>new NavPathStack())
+    logger.warn(ENTRYABILITY_LOG_TAG+'页面栈初始化完成')
   }
 
   onDestroy(): void {

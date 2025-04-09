@@ -1,0 +1,1 @@
+export const NAV_PATH_STUCK = 'navPathStuck'

@@ -11,7 +11,7 @@ import { rcp } from "@kit.RemoteCommunicationKit";
 import { util } from "@kit.ArkTS";
 import { BusinessError } from "@kit.BasicServicesKit";
 import { logger } from 'common'
-import { MESSAGE_LIST, MSG, STRING } from '../../constants/index'
+import { MESSAGE_LIST, MSG, CONTENT_TYPE_STRING } from '../../constants/index'
 
 
 /**
@@ -70,7 +70,7 @@ const sessionConfig: rcp.SessionConfiguration = {
               logger.warn(ON_DATA_RECEIVE+ '当前对话流式传输结束，开始进行对话历史写入')
               currentMsg.hasEnd = true
               const message = new CozeHistoryMessagesItem(HistoryMessages_Role.Assistant)
-              message.content_type= STRING
+              message.content_type= CONTENT_TYPE_STRING
               message.content=currentMsg.content!
               historyMessageList.addMessage(message)
               logger.warn(ON_DATA_RECEIVE+'历史添加完毕')
