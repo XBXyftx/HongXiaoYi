@@ -1,3 +1,4 @@
 export enum NavDests{
-  MAIN='Main'
+  MAIN='Main',
+  CHAT='Chat'
 }
