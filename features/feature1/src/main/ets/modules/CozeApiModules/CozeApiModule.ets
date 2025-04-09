@@ -141,48 +141,10 @@ export class ViewMessageModel {
   /**
    * 人类是1Ai是0
    */
-  private _type: number | null = null;
-
-  public set type(value: number | null) {
-    this._type = value;
-  }
-
-  public get type(): number | null {
-    return this._type;
-  }
-
-  @Trace
-  private _hasEnd: boolean = true;
-
-  public set hasEnd(value: boolean) {
-    this._hasEnd = value;
-  }
-
-  public get hasEnd(): boolean {
-    return this._hasEnd;
-  }
-
-  @Trace
-  private _content: string | null = null;
-
-  public set content(value: string | null) {
-    this._content = value;
-  }
-
-  public get content(): string | null {
-    return this._content;
-  }
-
-  @Trace
-  private _currentIndex?: number | undefined;
-
-  public set currentIndex(value: number | undefined) {
-    this._currentIndex = value;
-  }
-
-  public get currentIndex(): number | undefined {
-    return this._currentIndex;
-  }
+  type: number | null = null;
+  @Trace hasEnd: boolean = true;
+  @Trace content: string | null = null;
+  @Trace currentIndex?: number;
 }
 
 export interface IHXYConversationMessage_DeltaData {

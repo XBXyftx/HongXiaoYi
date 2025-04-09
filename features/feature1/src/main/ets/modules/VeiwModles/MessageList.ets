@@ -25,9 +25,9 @@ export class HistoryMessageList {
       // 如果数组长度超过30，删除数组的第一位
       this.list.shift();
     }
-    logger.info(MESSAGE_LIST + '当前数组长度:  ' + this.list.length)
     // 加入新的消息
     this.list.push(Message);
+    logger.info(MESSAGE_LIST + '当前数组长度:  ' + this.list.length)
     logger.info(MESSAGE_LIST + '添加成功')
   }
 
