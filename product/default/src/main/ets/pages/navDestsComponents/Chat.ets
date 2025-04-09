@@ -32,6 +32,15 @@ export struct Chat {
   @Local historyMsgs: HistoryMessageList =
     AppStorageV2.connect(HistoryMessageList, MESSAGE_LIST, () => new HistoryMessageList())!
 
+  @Monitor ('currentMsg.hasEnd')
+  onContentEnd(): void {
+    if (this.currentMsg.hasEnd) {
+      this.viewMessageList.pop();
+      this.viewMessageList.push({ content: this.currentMsg.content!.replace('null', ''), type: 0, hasEnd: true });
+      this.currentMsg.content = '';
+    }
+  }
+
   build() {
     NavDestination() {
       GridRow() {

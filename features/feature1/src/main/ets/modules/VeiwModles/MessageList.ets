@@ -29,6 +29,9 @@ export class HistoryMessageList {
     this.list.push(Message);
     logger.info(MESSAGE_LIST + '当前数组长度:  ' + this.list.length)
     logger.info(MESSAGE_LIST + '添加成功')
+    this.list.forEach((item:CozeHistoryMessagesItem)=>[
+      logger.info(JSON.stringify(item))
+    ])
   }
 
   public clone() {
@@ -39,6 +42,7 @@ export class HistoryMessageList {
   }
 
   public getList(): CozeHistoryMessagesItem<undefined, undefined>[] {
-    return this.clone()
+    // return this.clone()
+    return this.list
   }
 }

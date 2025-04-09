@@ -33,7 +33,7 @@ const sessionConfig: rcp.SessionConfiguration = {
   requestConfiguration: {
     transfer: {
       timeout: {
-        transferMs: 12000
+        transferMs: 1200000
       }
     },
     tracing: {
