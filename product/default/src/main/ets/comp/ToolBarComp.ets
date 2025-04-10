@@ -1,6 +1,5 @@
 import { promptAction } from "@kit.ArkUI";
 import { logger } from "common/Index";
-import { requestCozeAi } from "feature1";
 
 @ComponentV2
 export struct ToolBarComp {
@@ -28,7 +27,6 @@ export struct ToolBarComp {
             })
           } else {
             this.submit(this.content);
-
             this.content = ''
           }
         })
