@@ -47,8 +47,9 @@ struct Main {
         GridRow() {
           GridCol({ span: { sm: 12, md: 10, lg: 8 }, offset: { sm: 0, md: 1, lg: 2 } }) {
             Column() {
-              Image($rawfile('logo.png'))
-                .width('30%')
+              Image($rawfile('logo.jpg'))
+                .width(100)
+                .borderRadius(25)
               Text('鸿小易')
                 .fontSize(50)
                 .fontColor($r('app.color.test_fontcolor'))
