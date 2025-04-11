@@ -1,6 +1,7 @@
 import { ViewMessageModel } from "feature1";
 import { MarkdownV2 } from '@lidary/markdown';
-import { animateParam } from "common";
+import { animateParam, NavDests, NAV_PATH_STUCK } from "common";
+import { AppStorageV2 } from "@kit.ArkUI";
 
 @ComponentV2
 export struct ContentComp {
@@ -9,6 +10,11 @@ export struct ContentComp {
   @Param @Require content: string;
   @Param @Require currentIndex: number;
 
+  onPageShow(): void {
+    const navPathStuck: NavPathStack = AppStorageV2.connect(NavPathStack, NAV_PATH_STUCK)!
+    const mainIndex = navPathStuck.getIndexByName(NavDests.MAIN)
+    navPathStuck.removeByIndexes(mainIndex)
+  }
   build() {
     Column() {
       Stack({alignContent:Alignment.Bottom}){
