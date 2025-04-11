@@ -13,8 +13,28 @@
       "value": "#FF000000"
     },
     {
-      "name": "test_fontcolor",
+      "name": "start_fontcolor",
       "value": "#FFFFFFFF"
+    },
+    {
+      "name": "chat_ai_fontcolor",
+      "value": "#FFFFFFFF"
+    },
+    {
+      "name": "chat_ai_bg_color",
+      "value": "#99002570"
+    },
+    {
+      "name": "chat_ai_md_theme_color",
+      "value": "#FF0050FC"
+    },
+    {
+      "name": "chat_human_bg_color",
+      "value": "#9A000000"
+    },
+    {
+      "name": "chat_tool_hide_bar_color",
+      "value": "#00000000"
     }
   ]
 }

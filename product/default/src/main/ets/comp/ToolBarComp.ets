@@ -4,8 +4,7 @@ import { logger } from "common/Index";
 @ComponentV2
 export struct ToolBarComp {
   @Local content: string = '';
-
-
+  @Param @Require hasEnd: boolean
   @Event submit: (content: string) => void;
 
   build() {
@@ -15,21 +14,24 @@ export struct ToolBarComp {
         .onChange((value: string) => {
           this.content = value;
         })
-      Button('发送')
-        .layoutWeight(1)
-        .clickEffect({ level: ClickEffectLevel.LIGHT })
-        .onClick(() => {
-          if (this.content === '') {
-            logger.warn('消息为空')
-            promptAction.showToast({
-              message: '发送消息不能为空',
-              duration: 3000
-            })
-          } else {
-            this.submit(this.content);
-            this.content = ''
-          }
-        })
+      if (this.hasEnd) {
+        Button('发送')
+          .layoutWeight(1)
+          .clickEffect({ level: ClickEffectLevel.LIGHT })
+          .onClick(() => {
+            if (this.content === '') {
+              logger.warn('消息为空')
+              promptAction.showToast({
+                message: '发送消息不能为空',
+                duration: 3000
+              })
+            } else {
+              this.submit(this.content);
+              this.content = ''
+            }
+          })
+      }
+
     }
     .height('10%')
     .width('100%')
@@ -37,7 +39,6 @@ export struct ToolBarComp {
     .padding(10)
     .expandSafeArea()
   }
-
 }
 
 

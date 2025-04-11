@@ -65,7 +65,8 @@ export struct Chat {
                 this.currentMsg.currentIndex = this.viewMessageList.length - 1;
                 this.currentMsg.hasEnd = false;
                 requestCozeAi()
-              }
+              },
+              hasEnd:this.currentMsg.hasEnd
             })
           }
           .width('100%')

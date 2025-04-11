@@ -52,17 +52,17 @@ struct Main {
                 .borderRadius(25)
               Text('鸿小易')
                 .fontSize(50)
-                .fontColor($r('app.color.test_fontcolor'))
+                .fontColor($r('app.color.start_fontcolor'))
               Row({ space: 20 }) {
                 Text('鸿蒙开发智能体')
                   .fontSize(25)
                   .width(30)
-                  .fontColor($r('app.color.test_fontcolor'))
+                  .fontColor($r('app.color.start_fontcolor'))
                   .margin({ bottom: 25 })
                 Text('您的开发好帮手')
                   .fontSize(25)
                   .width(30)
-                  .fontColor($r('app.color.test_fontcolor'))
+                  .fontColor($r('app.color.start_fontcolor'))
                   .margin({ top: 25 })
               }
             }
