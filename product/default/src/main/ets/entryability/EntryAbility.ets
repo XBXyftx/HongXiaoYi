@@ -1,7 +1,7 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppStorageV2, window } from '@kit.ArkUI';
-import { env, GetBreakPointSystem, GET_BREAK_POINT_SYSTEM, logger, NAV_PATH_STUCK } from 'common';
+import { CONTEXT, env, GetBreakPointSystem, GetContext, GET_BREAK_POINT_SYSTEM, logger, NAV_PATH_STUCK } from 'common';
 import { HistoryMessageList, ViewMessageModel, MESSAGE_LIST, MSG } from 'feature1';
 
 const DOMAIN = 0x0000;
@@ -27,6 +27,9 @@ export default class EntryAbility extends UIAbility {
 
     AppStorageV2.connect(NavPathStack,NAV_PATH_STUCK,()=>new NavPathStack())
     logger.warn(ENTRYABILITY_LOG_TAG+'页面栈初始化完成')
+
+    AppStorageV2.connect<GetContext>(GetContext, CONTEXT, () => new GetContext(this.context))
+    logger.warn(ENTRYABILITY_LOG_TAG+'获取上下文对象成功')
   }
 
   onDestroy(): void {
