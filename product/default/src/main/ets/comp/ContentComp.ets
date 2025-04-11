@@ -1,5 +1,7 @@
 import { ViewMessageModel } from "feature1";
 import { MarkdownV2 } from '@lidary/markdown';
+import { animateParam } from "common";
+
 @ComponentV2
 export struct ContentComp {
   @Param @Require messages: ViewMessageModel[];
@@ -16,12 +18,6 @@ export struct ContentComp {
               ListItem() {
                 if (msg.item.type === 0) {
                   Column() {
-                    // Text(msg.item.content)
-                    //   .backgroundColor(Color.Green)
-                    //   .padding(10)
-                    //   .fontColor(Color.White)
-                    //   .borderRadius(5)
-                    //   .visibility(msg.item.content == '' ? Visibility.None : Visibility.Visible)
                     MarkdownV2({
                       content:msg.item.content,
                       lineSpace:6,
@@ -85,6 +81,9 @@ export struct ContentComp {
 
                 }
               }
+              .transition(TransitionEffect.OPACITY
+                .animation(animateParam)
+                .combine(TransitionEffect.translate({y:200})))
             })
         }
         .scrollBar(BarState.Off)

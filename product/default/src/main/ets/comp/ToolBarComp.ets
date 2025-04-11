@@ -1,5 +1,5 @@
 import { promptAction } from "@kit.ArkUI";
-import { logger } from "common/Index";
+import { animateParam, logger } from "common/Index";
 
 @ComponentV2
 export struct ToolBarComp {
@@ -14,6 +14,9 @@ export struct ToolBarComp {
         .onChange((value: string) => {
           this.content = value;
         })
+        .transition(TransitionEffect.OPACITY
+          .animation(animateParam)
+          .combine(TransitionEffect.translate({y:200})))
       if (this.hasEnd) {
         Button('发送')
           .layoutWeight(1)
@@ -30,6 +33,9 @@ export struct ToolBarComp {
               this.content = ''
             }
           })
+          .transition(TransitionEffect.OPACITY
+            .animation(animateParam)
+            .combine(TransitionEffect.translate({y:200})))
       }
 
     }
@@ -37,7 +43,6 @@ export struct ToolBarComp {
     .width('100%')
 
     .padding(10)
-    .expandSafeArea()
   }
 }
 

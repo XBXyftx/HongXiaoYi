@@ -3,7 +3,7 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { AppStorageV2, window } from '@kit.ArkUI';
 import { CONTEXT, env, GetBreakPointSystem, GetContext, GET_BREAK_POINT_SYSTEM, logger, NAV_PATH_STUCK } from 'common';
 import { HistoryMessageList, ViewMessageModel, MESSAGE_LIST, MSG } from 'feature1';
-
+import { KeyboardAvoidMode } from '@kit.ArkUI';
 const DOMAIN = 0x0000;
 const ENTRYABILITY_LOG_TAG = 'EntryAbility:  '
 
@@ -44,6 +44,8 @@ export default class EntryAbility extends UIAbility {
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
 
     windowStage.loadContent('pages/Main', (err) => {
+      windowStage.getMainWindowSync().getUIContext().setKeyboardAvoidMode(KeyboardAvoidMode.OFFSET);
+      logger.warn(ENTRYABILITY_LOG_TAG+'KeyboardAvoidMode:  '+JSON.stringify(windowStage.getMainWindowSync().getUIContext().getKeyboardAvoidMode()))
       if (err.code) {
         hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));
         return;
