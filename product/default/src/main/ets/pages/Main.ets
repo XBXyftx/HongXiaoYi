@@ -20,7 +20,7 @@ struct Main {
   })
   @Local navPathStuck: NavPathStack = AppStorageV2.connect(NavPathStack, NAV_PATH_STUCK)!
   @Local env: Env = env
-
+  @Local removeId:string=''
   @Monitor('env.colorMode')
   onColorModeChange() {
     logger.warn('onColorModeChange:  ' + '当前颜色模式编号为' + env.colorMode)
@@ -35,59 +35,15 @@ struct Main {
     }
   }
 
-  onPageShow(): void {
-    setTimeout(() => {
-      this.navPathStuck.pushPath({ name: NavDests.CHAT })
-    }, 2000)
-  }
+  // aboutToAppear(): void {
+  //   this.navPathStuck.pushPath({name:NavDests.CHAT})
+  // }
+
 
   build() {
     Column() {
       Navigation(this.navPathStuck) {
-        GridRow() {
-          GridCol({ span: { sm: 12, md: 10, lg: 8 }, offset: { sm: 0, md: 1, lg: 2 } }) {
-            Column() {
-              Image($rawfile('logo.jpg'))
-                .width(100)
-                .borderRadius(25)
-                .transition(TransitionEffect.OPACITY
-                  .animation(animateParam)
-                  .combine(TransitionEffect.translate({y:200})))
-              Text('鸿小易')
-                .fontSize(50)
-                .fontColor($r('app.color.start_fontcolor'))
-                .transition(TransitionEffect.OPACITY
-                  .animation(animateParam)
-                  .combine(TransitionEffect.translate({y:200})))
-              Row({ space: 20 }) {
-                Text('鸿蒙开发智能体')
-                  .fontSize(25)
-                  .width(30)
-                  .fontColor($r('app.color.start_fontcolor'))
-                  .margin({ bottom: 25 })
-                  .transition(TransitionEffect.OPACITY
-                    .animation(animateParam)
-                    .combine(TransitionEffect.translate({y:200})))
-                Text('您的开发好帮手')
-                  .fontSize(25)
-                  .width(30)
-                  .fontColor($r('app.color.start_fontcolor'))
-                  .margin({ top: 25 })
-                  .transition(TransitionEffect.OPACITY
-                    .animation(animateParam)
-                    .combine(TransitionEffect.translate({y:200})))
-              }
-            }
-            .justifyContent(FlexAlign.SpaceEvenly)
-            .padding({ top: '20%', bottom: '10%' })
-            .width('100%')
-            .height('100%')
-          }
-
-        }
-        .width('100%')
-        .height('100%')
-
+        Chat()
       }
       .backgroundColor(Color.Transparent)
       .padding(10)

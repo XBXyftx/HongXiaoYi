@@ -81,9 +81,11 @@ export struct Chat {
     }
     .hideTitleBar(true)
     .title('鸿小易')
-    // .hideBackButton(true)
     .backgroundColor(Color.Transparent)
     .width('100%')
     .height('100%')
+    .onBackPressed(()=>{
+      return false
+    })
   }
 }

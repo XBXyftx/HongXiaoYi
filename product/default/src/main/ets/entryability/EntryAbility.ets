@@ -43,7 +43,7 @@ export default class EntryAbility extends UIAbility {
     // Main window is created, set main page for this ability
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
 
-    windowStage.loadContent('pages/Main', (err) => {
+    windowStage.loadContent('pages/StartPage', (err) => {
       windowStage.getMainWindowSync().getUIContext().setKeyboardAvoidMode(KeyboardAvoidMode.OFFSET);
       logger.warn(ENTRYABILITY_LOG_TAG+'KeyboardAvoidMode:  '+JSON.stringify(windowStage.getMainWindowSync().getUIContext().getKeyboardAvoidMode()))
       if (err.code) {
