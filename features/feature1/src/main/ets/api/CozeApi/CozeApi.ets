@@ -68,7 +68,6 @@ const sessionConfig: rcp.SessionConfiguration = {
               })
             } else if (s.includes('done')) {
               logger.warn(ON_DATA_RECEIVE+ '当前对话流式传输结束，开始进行对话历史写入')
-              currentMsg.hasEnd = true
               const message = new CozeHistoryMessagesItem(HistoryMessages_Role.Assistant)
               message.content_type= CONTENT_TYPE_STRING
               message.content=currentMsg.content!
@@ -102,6 +101,7 @@ export function requestCozeAi() {
       logger.error(err.message)
     })
     .finally(() => {
+      currentMsg.hasEnd = true
       logger.info('requestCozeAi:  ' + '数据传输已完成')
       session.close()
       logger.warn('session已关闭')
