@@ -52,7 +52,7 @@ const sessionConfig: rcp.SessionConfiguration = {
                 logger.info('读取到的data： ' + data)
                 const message_data = JSON.parse(data) as IHXYConversationMessage_DeltaData
                 logger.info('onDataReceive写入： ' + message_data.content)
-                currentMsg.content += message_data.content
+                currentMsg.content += message_data.content.replace('null', '')
                 logger.info('msgModel.hasEnd= ' + currentMsg.hasEnd)
                 logger.info('____________________________')
                 }else if (index === 2){
@@ -61,18 +61,11 @@ const sessionConfig: rcp.SessionConfiguration = {
                   logger.info('读取到的data： ' + data)
                   const message_data = JSON.parse(data) as IHXYConversationMessage_DeltaData
                   logger.info('onDataReceive写入： ' + message_data.content)
-                  currentMsg.content += message_data.content
+                  currentMsg.content += message_data.content.replace('null', '')
                   logger.info('msgModel.hasEnd= ' + currentMsg.hasEnd)
                   logger.info('____________________________')
                 }
               })
-            } else if (s.includes('done')) {
-              logger.warn(ON_DATA_RECEIVE+ '当前对话流式传输结束，开始进行对话历史写入')
-              const message = new CozeHistoryMessagesItem(HistoryMessages_Role.Assistant)
-              message.content_type= CONTENT_TYPE_STRING
-              message.content=currentMsg.content!
-              historyMessageList.addMessage(message)
-              logger.warn(ON_DATA_RECEIVE+'历史添加完毕')
             }
           } catch (err) {
             logger.error(ON_DATA_RECEIVE+ 'onDataReceive捕获异常: ' + err)
@@ -101,9 +94,15 @@ export function requestCozeAi() {
       logger.error(err.message)
     })
     .finally(() => {
+      logger.warn('requestCozeAi:  '+ '当前对话流式传输结束，开始进行对话历史写入')
+      const message = new CozeHistoryMessagesItem(HistoryMessages_Role.Assistant)
+      message.content_type= CONTENT_TYPE_STRING
+      message.content=currentMsg.content!
+      historyMessageList.addMessage(message)
+      logger.warn('requestCozeAi:  '+'历史添加完毕')
       currentMsg.hasEnd = true
       logger.info('requestCozeAi:  ' + '数据传输已完成')
       session.close()
-      logger.warn('session已关闭')
+      logger.warn('requestCozeAi:  '+'session已关闭')
     })
 }
