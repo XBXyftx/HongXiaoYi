@@ -21,7 +21,8 @@ const currentMsg: ViewMessageModel = AppStorageV2.connect(ViewMessageModel, MSG,
 /**
  * 当前需要发送给AI的聊天记录
  */
-const historyMessageList: HistoryMessageList = AppStorageV2.connect(HistoryMessageList, MESSAGE_LIST,()=>new HistoryMessageList())!
+const historyMessageList: HistoryMessageList =
+  AppStorageV2.connect(HistoryMessageList, MESSAGE_LIST, () => new HistoryMessageList())!
 
 
 const ON_DATA_RECEIVE = 'onDataReceive:  ';
@@ -47,15 +48,27 @@ const sessionConfig: rcp.SessionConfiguration = {
             if (s.includes('conversation.message.delta')) {
               s.split('data: ').forEach((item: string, index) => {
                 if (index === 1) {
-                const data = item.split('event: ')[0]
-                logger.info('____________________________')
-                logger.info('读取到的data： ' + data)
-                const message_data = JSON.parse(data) as IHXYConversationMessage_DeltaData
-                logger.info('onDataReceive写入： ' + message_data.content)
-                currentMsg.content += message_data.content.replace('null', '')
-                logger.info('msgModel.hasEnd= ' + currentMsg.hasEnd)
-                logger.info('____________________________')
-                }else if (index === 2){
+                  const data = item.split('event: ')[0]
+                  logger.info('____________________________')
+                  logger.info('读取到的data： ' + data)
+                  const message_data = JSON.parse(data) as IHXYConversationMessage_DeltaData
+                  logger.info('onDataReceive写入： ' + message_data.content)
+                  const dataWaitToAdd = message_data.content.replace('null', '')
+                  let i = 0
+                  const id = setInterval(()=>{
+                    if (i<dataWaitToAdd.length) {
+                      logger.warn('i='+i+'  dataWaitToAdd.charAt(i)  '+dataWaitToAdd.charAt(i))
+                      currentMsg.content += dataWaitToAdd.charAt(i)
+                      i++
+                    }else if (i===dataWaitToAdd.length){
+                      clearInterval(id)
+                    }
+
+                  },200)
+
+                  logger.info('msgModel.hasEnd= ' + currentMsg.hasEnd)
+                  logger.info('____________________________')
+                } else if (index === 2) {
                   const data = item
                   logger.info('____________________________')
                   logger.info('读取到的data： ' + data)
@@ -68,7 +81,7 @@ const sessionConfig: rcp.SessionConfiguration = {
               })
             }
           } catch (err) {
-            logger.error(ON_DATA_RECEIVE+ 'onDataReceive捕获异常: ' + err)
+            logger.error(ON_DATA_RECEIVE + 'onDataReceive捕获异常: ' + err)
           }
 
         }
@@ -81,7 +94,7 @@ const sessionConfig: rcp.SessionConfiguration = {
 export function requestCozeAi() {
   const ai: ICoZePostBody = {
     workflow_id: '7487986803871760399',
-    additional_messages:historyMessageList.getList(),
+    additional_messages: historyMessageList.getList(),
     parameters: new Map<string, string>([['CONVERSATION_NAME', 'HXY' + Date.now()]])
   }
   promptAction.showToast({
@@ -94,15 +107,15 @@ export function requestCozeAi() {
       logger.error(err.message)
     })
     .finally(() => {
-      logger.warn('requestCozeAi:  '+ '当前对话流式传输结束，开始进行对话历史写入')
+      logger.warn('requestCozeAi:  ' + '当前对话流式传输结束，开始进行对话历史写入')
       const message = new CozeHistoryMessagesItem(HistoryMessages_Role.Assistant)
-      message.content_type= CONTENT_TYPE_STRING
-      message.content=currentMsg.content!
+      message.content_type = CONTENT_TYPE_STRING
+      message.content = currentMsg.content!
       historyMessageList.addMessage(message)
-      logger.warn('requestCozeAi:  '+'历史添加完毕')
+      logger.warn('requestCozeAi:  ' + '历史添加完毕')
       currentMsg.hasEnd = true
       logger.info('requestCozeAi:  ' + '数据传输已完成')
       session.close()
-      logger.warn('requestCozeAi:  '+'session已关闭')
+      logger.warn('requestCozeAi:  ' + 'session已关闭')
     })
 }
