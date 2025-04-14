@@ -63,7 +63,6 @@ const sessionConfig: rcp.SessionConfiguration = {
                     }else if (i===dataWaitToAdd.length){
                       clearInterval(id)
                     }
-
                   },200)
 
                   logger.info('msgModel.hasEnd= ' + currentMsg.hasEnd)
@@ -74,7 +73,17 @@ const sessionConfig: rcp.SessionConfiguration = {
                   logger.info('读取到的data： ' + data)
                   const message_data = JSON.parse(data) as IHXYConversationMessage_DeltaData
                   logger.info('onDataReceive写入： ' + message_data.content)
-                  currentMsg.content += message_data.content.replace('null', '')
+                  const dataWaitToAdd = message_data.content.replace('null', '')
+                  let i = 0
+                  const id = setInterval(()=>{
+                    if (i<dataWaitToAdd.length) {
+                      logger.warn('i='+i+'  dataWaitToAdd.charAt(i)  '+dataWaitToAdd.charAt(i))
+                      currentMsg.content += dataWaitToAdd.charAt(i)
+                      i++
+                    }else if (i===dataWaitToAdd.length){
+                      clearInterval(id)
+                    }
+                  },200)
                   logger.info('msgModel.hasEnd= ' + currentMsg.hasEnd)
                   logger.info('____________________________')
                 }
