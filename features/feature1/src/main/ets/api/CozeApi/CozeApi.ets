@@ -4,14 +4,15 @@ import {
   CozeHistoryMessagesItem,
   IHXYConversationMessage_DeltaData,
   ViewMessageModel,
-  HistoryMessageList
+  HistoryMessageList,
+  typeStringBuffer
 } from "../../modules";
 import { AppStorageV2, promptAction } from "@kit.ArkUI";
 import { rcp } from "@kit.RemoteCommunicationKit";
 import { util } from "@kit.ArkTS";
 import { BusinessError } from "@kit.BasicServicesKit";
 import { logger } from 'common'
-import { MESSAGE_LIST, MSG, CONTENT_TYPE_STRING } from '../../constants/index'
+import { MESSAGE_LIST, MSG, CONTENT_TYPE_STRING, STRING_BUFFER_ZONE } from '../../constants/index'
 
 
 /**
@@ -23,7 +24,7 @@ const currentMsg: ViewMessageModel = AppStorageV2.connect(ViewMessageModel, MSG,
  */
 const historyMessageList: HistoryMessageList =
   AppStorageV2.connect(HistoryMessageList, MESSAGE_LIST, () => new HistoryMessageList())!
-
+// let bufferZone = AppStorageV2.connect(String,STRING_BUFFER_ZONE,()=>'')!
 
 const ON_DATA_RECEIVE = 'onDataReceive:  ';
 const sessionConfig: rcp.SessionConfiguration = {
@@ -52,19 +53,10 @@ const sessionConfig: rcp.SessionConfiguration = {
                   logger.info('____________________________')
                   logger.info('读取到的data： ' + data)
                   const message_data = JSON.parse(data) as IHXYConversationMessage_DeltaData
-                  logger.info('onDataReceive写入： ' + message_data.content)
                   const dataWaitToAdd = message_data.content.replace('null', '')
-                  let i = 0
-                  const id = setInterval(()=>{
-                    if (i<dataWaitToAdd.length) {
-                      logger.warn('i='+i+'  dataWaitToAdd.charAt(i)  '+dataWaitToAdd.charAt(i))
-                      currentMsg.content += dataWaitToAdd.charAt(i)
-                      i++
-                    }else if (i===dataWaitToAdd.length){
-                      clearInterval(id)
-                    }
-                  },200)
-
+                  logger.info('onDataReceive写入： ' + dataWaitToAdd)
+                  typeStringBuffer.strAdd(dataWaitToAdd)
+                  typeStringBuffer.start()
                   logger.info('msgModel.hasEnd= ' + currentMsg.hasEnd)
                   logger.info('____________________________')
                 } else if (index === 2) {
@@ -74,16 +66,7 @@ const sessionConfig: rcp.SessionConfiguration = {
                   const message_data = JSON.parse(data) as IHXYConversationMessage_DeltaData
                   logger.info('onDataReceive写入： ' + message_data.content)
                   const dataWaitToAdd = message_data.content.replace('null', '')
-                  let i = 0
-                  const id = setInterval(()=>{
-                    if (i<dataWaitToAdd.length) {
-                      logger.warn('i='+i+'  dataWaitToAdd.charAt(i)  '+dataWaitToAdd.charAt(i))
-                      currentMsg.content += dataWaitToAdd.charAt(i)
-                      i++
-                    }else if (i===dataWaitToAdd.length){
-                      clearInterval(id)
-                    }
-                  },200)
+                  typeStringBuffer.strAdd(dataWaitToAdd)
                   logger.info('msgModel.hasEnd= ' + currentMsg.hasEnd)
                   logger.info('____________________________')
                 }
@@ -122,7 +105,7 @@ export function requestCozeAi() {
       message.content = currentMsg.content!
       historyMessageList.addMessage(message)
       logger.warn('requestCozeAi:  ' + '历史添加完毕')
-      currentMsg.hasEnd = true
+      // currentMsg.hasEnd = true
       logger.info('requestCozeAi:  ' + '数据传输已完成')
       session.close()
       logger.warn('requestCozeAi:  ' + 'session已关闭')
