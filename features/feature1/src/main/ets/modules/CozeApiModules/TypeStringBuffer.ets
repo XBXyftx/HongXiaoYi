@@ -49,7 +49,7 @@ class TypeStringBuffer {
             this.currentMsg.hasEnd=true
           }
         }, 20);
-      }, 1000);
+      }, 500);
     }
   }
 }
