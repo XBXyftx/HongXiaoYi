@@ -1,4 +1,4 @@
-import { ViewMessageModel, WelcomeApi } from "feature1";
+import { ViewMessageModel } from "feature1";
 import { MarkdownV2 } from '@lidary/markdown';
 import { animateParam } from "common";
 @ComponentV2
@@ -22,7 +22,7 @@ export struct ContentComp {
                       lineSpace:6,
                       fontStyle:{
                         fontColor:$r('app.color.chat_ai_fontcolor'),
-                        fontSize:14
+                        fontSize:16
                       }
                     })
                       .padding(10)
@@ -40,7 +40,7 @@ export struct ContentComp {
                             })
                             .color(Color.White)
                           Text('思考中')
-                            .fontSize(14)
+                            .fontSize(16)
                             .fontColor($r('app.color.chat_ai_fontcolor'))
                         }
                         MarkdownV2({
@@ -48,7 +48,7 @@ export struct ContentComp {
                           lineSpace:6,
                           fontStyle:{
                             fontColor:$r('app.color.chat_ai_fontcolor'),
-                            fontSize:14
+                            fontSize:16
                           },
                           theme:{
                             themeColor:$r('app.color.chat_ai_md_theme_color')
@@ -69,6 +69,7 @@ export struct ContentComp {
                   Row() {
                     Blank()
                     Text(msg.item.content)
+                      .fontSize(16)
                       .backgroundColor($r('app.color.chat_human_bg_color'))
                       .padding(10)
                       .borderRadius(5)

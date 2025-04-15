@@ -43,6 +43,11 @@ export struct Chat {
     }
   }
 
+  @Monitor('currentMsg.content')
+  onContentChange():void{
+    logger.debug('currentMsg.content:  '+this.currentMsg.content)
+  }
+
   build() {
     NavDestination() {
       GridRow() {

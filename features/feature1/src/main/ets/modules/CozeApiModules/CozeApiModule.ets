@@ -143,7 +143,7 @@ export class ViewMessageModel {
    */
   type: number | null = null;
   @Trace hasEnd: boolean = true;
-  @Trace content: string | null = null;
+  @Trace content: string = '';
   @Trace currentIndex?: number;
 }
 
