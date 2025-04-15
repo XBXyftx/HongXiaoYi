@@ -46,6 +46,7 @@ const sessionConfig: rcp.SessionConfiguration = {
           const s = new util.TextDecoder().decodeToString(bufferFrom);
           logger.info('onDataReceive原始数据：  ' + s)
           try {
+            typeStringBuffer.rcpEnd=false
             if (s.includes('conversation.message.delta')) {
               s.split('data: ').forEach((item: string, index) => {
                 if (index === 1) {
@@ -99,6 +100,7 @@ export function requestCozeAi() {
       logger.error(err.message)
     })
     .finally(() => {
+      typeStringBuffer.rcpEnd=true
       logger.warn('requestCozeAi:  ' + '当前对话流式传输结束，开始进行对话历史写入')
       const message = new CozeHistoryMessagesItem(HistoryMessages_Role.Assistant)
       message.content_type = CONTENT_TYPE_STRING
