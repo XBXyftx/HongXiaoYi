@@ -48,8 +48,8 @@ class TypeStringBuffer {
             logger.warn('StringBuffer.start:  ' + '所有字符已输出');
             this.currentMsg.hasEnd=true
           }
-        }, 20);
-      }, 500);
+        }, 50);
+      }, 1000);
     }
   }
 }
