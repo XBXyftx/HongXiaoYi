@@ -58,5 +58,4 @@ class TypeStringBuffer {
     }
   }
 }
-
 export const typeStringBuffer: TypeStringBuffer = new TypeStringBuffer()
