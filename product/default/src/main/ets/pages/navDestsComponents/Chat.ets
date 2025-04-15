@@ -7,7 +7,8 @@ import {
   MESSAGE_LIST,
   MSG,
   requestCozeAi,
-  ViewMessageModel
+  ViewMessageModel,
+  WelcomeApi
 } from "feature1"
 import { AppStorageV2 } from "@kit.ArkUI"
 import { ToolBarComp } from "../../comp/ToolBarComp"
@@ -17,8 +18,9 @@ import { ContentComp } from "../../comp/ContentComp"
 export struct Chat {
   /**
    * 渲染对话列表数组
+   * 初始化欢迎语空对象
    */
-  @Local viewMessageList: ViewMessageModel[] = []
+  @Local viewMessageList: ViewMessageModel[] = [{ content: '', type: 0, hasEnd: true }]
   @Local breakPointState: BreakpointState<Object> = BreakpointState.of({
     xs: 'xs',
     sm: 'sm',
@@ -79,13 +81,13 @@ export struct Chat {
       .height('100%')
 
     }
+    .onReady(()=>{
+      WelcomeApi.welcome()
+    })
     .hideTitleBar(true)
     .title('鸿小易')
     .backgroundColor(Color.Transparent)
     .width('100%')
     .height('100%')
-    .onBackPressed(()=>{
-      return false
-    })
   }
 }

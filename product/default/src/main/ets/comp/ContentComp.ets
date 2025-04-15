@@ -1,8 +1,6 @@
-import { ViewMessageModel } from "feature1";
+import { ViewMessageModel, WelcomeApi } from "feature1";
 import { MarkdownV2 } from '@lidary/markdown';
-import { animateParam, NavDests, NAV_PATH_STUCK } from "common";
-import { AppStorageV2 } from "@kit.ArkUI";
-
+import { animateParam } from "common";
 @ComponentV2
 export struct ContentComp {
   @Param @Require messages: ViewMessageModel[];
@@ -10,11 +8,6 @@ export struct ContentComp {
   @Param @Require content: string;
   @Param @Require currentIndex: number;
 
-  onPageShow(): void {
-    const navPathStuck: NavPathStack = AppStorageV2.connect(NavPathStack, NAV_PATH_STUCK)!
-    const mainIndex = navPathStuck.getIndexByName(NavDests.MAIN)
-    navPathStuck.removeByIndexes(mainIndex)
-  }
   build() {
     Column() {
       Stack({alignContent:Alignment.Bottom}){
@@ -50,9 +43,6 @@ export struct ContentComp {
                             .fontSize(14)
                             .fontColor($r('app.color.chat_ai_fontcolor'))
                         }
-
-                        // Text(this.content)
-                        //   .fontColor(Color.White)
                         MarkdownV2({
                           content:this.content,
                           lineSpace:6,
