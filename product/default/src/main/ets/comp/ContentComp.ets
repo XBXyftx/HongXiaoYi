@@ -7,11 +7,15 @@ export struct ContentComp {
   @Param @Require hasEnd: boolean;
   @Param @Require content: string;
   @Param @Require currentIndex: number;
-
+  listScroller:Scroller = new Scroller()
+  @Monitor('content')
+  onChange(){
+    this.listScroller.scrollEdge(Edge.Bottom)
+  }
   build() {
     Column() {
       Stack({alignContent:Alignment.Bottom}){
-        List({ space: '5vp' }) {
+        List({ space: '5vp' ,scroller:this.listScroller}) {
           Repeat(this.messages)
             .each((msg: RepeatItem<ViewMessageModel>) => {
               ListItem() {

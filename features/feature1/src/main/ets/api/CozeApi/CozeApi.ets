@@ -44,31 +44,31 @@ const sessionConfig: rcp.SessionConfiguration = {
           currentMsg.hasEnd = false
           const bufferFrom: Uint8Array = new Uint8Array(inComingData);
           const s = new util.TextDecoder().decodeToString(bufferFrom);
-          console.log('onDataReceive原始数据：  ' + s)
+          logger.info('onDataReceive原始数据：  ' + s)
           try {
             if (s.includes('conversation.message.delta')) {
               s.split('data: ').forEach((item: string, index) => {
                 if (index === 1) {
                   const data = item.split('event: ')[0]
-                  logger.info('____________________________')
-                  logger.info('读取到的data： ' + data)
+                  // logger.info('____________________________')
+                  // logger.info('读取到的data： ' + data)
                   const message_data = JSON.parse(data) as IHXYConversationMessage_DeltaData
                   const dataWaitToAdd = message_data.content.replace('null', '')
-                  logger.info('onDataReceive写入： ' + dataWaitToAdd)
+                  logger.info('onDataReceive 向字符缓冲区写入： ' + dataWaitToAdd)
                   typeStringBuffer.strAdd(dataWaitToAdd)
                   typeStringBuffer.start()
-                  logger.info('msgModel.hasEnd= ' + currentMsg.hasEnd)
-                  logger.info('____________________________')
+                  // logger.info('msgModel.hasEnd= ' + currentMsg.hasEnd)
+                  // logger.info('____________________________')
                 } else if (index === 2) {
                   const data = item
-                  logger.info('____________________________')
-                  logger.info('读取到的data： ' + data)
+                  // logger.info('____________________________')
+                  // logger.info('读取到的data： ' + data)
                   const message_data = JSON.parse(data) as IHXYConversationMessage_DeltaData
-                  logger.info('onDataReceive写入： ' + message_data.content)
+                  logger.info('onDataReceive 向字符缓冲区写入： ' + message_data.content)
                   const dataWaitToAdd = message_data.content.replace('null', '')
                   typeStringBuffer.strAdd(dataWaitToAdd)
-                  logger.info('msgModel.hasEnd= ' + currentMsg.hasEnd)
-                  logger.info('____________________________')
+                  // logger.info('msgModel.hasEnd= ' + currentMsg.hasEnd)
+                  // logger.info('____________________________')
                 }
               })
             }
@@ -81,13 +81,13 @@ const sessionConfig: rcp.SessionConfiguration = {
     }
   }
 }
-
+const date = Date.now()
 
 export function requestCozeAi() {
   const ai: ICoZePostBody = {
     workflow_id: '7487986803871760399',
     additional_messages: historyMessageList.getList(),
-    parameters: new Map<string, string>([['CONVERSATION_NAME', 'HXY' + Date.now()]])
+    parameters: new Map<string, string>([['CONVERSATION_NAME', 'HXY' + date]])
   }
   promptAction.showToast({
     message: '发送请求成功'
@@ -105,8 +105,8 @@ export function requestCozeAi() {
       message.content = currentMsg.content!
       historyMessageList.addMessage(message)
       logger.warn('requestCozeAi:  ' + '历史添加完毕')
-      // currentMsg.hasEnd = true
-      logger.info('requestCozeAi:  ' + '数据传输已完成')
+      // // currentMsg.hasEnd = true
+      // logger.info('requestCozeAi:  ' + '数据传输已完成')
       session.close()
       logger.warn('requestCozeAi:  ' + 'session已关闭')
     })

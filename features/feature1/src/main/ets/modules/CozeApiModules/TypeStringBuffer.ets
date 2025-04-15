@@ -27,7 +27,7 @@ class TypeStringBuffer {
     for (let i=0;i<addStr.length;i++) {
       this.charArray.push(addStr.charAt(i));
     }
-    logger.warn('StringBuffer.strAdd:  ' + 'charArray=' + this.charArray.join(''));
+    // logger.warn('StringBuffer.strAdd:  ' + 'charArray=' + this.charArray.join(''));
   }
 
   start() {
@@ -41,14 +41,13 @@ class TypeStringBuffer {
             const currentChar = this.charArray.shift()!; // 取出并删除第一个字符
             logger.warn('StringBuffer.start:  '+'currentChar='+currentChar)
             this.currentMsg.content += currentChar;
-            logger.warn('StringBuffer.start:  ' + '输出字符=' + currentChar);
           } else {
             clearInterval(id);
             this.startSign = false;
             logger.warn('StringBuffer.start:  ' + '所有字符已输出');
             this.currentMsg.hasEnd=true
           }
-        }, 50);
+        }, 30);
       }, 1000);
     }
   }

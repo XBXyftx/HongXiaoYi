@@ -22,7 +22,7 @@
     },
     {
       "name": "chat_ai_bg_color",
-      "value": "#9991ABFF"
+      "value": "#FF91ABFF"
     },
     {
       "name": "chat_ai_md_theme_color",
@@ -30,7 +30,7 @@
     },
     {
       "name": "chat_human_bg_color",
-      "value": "#9AFFFFFF"
+      "value": "#FFD2D2D2"
     },
     {
       "name": "chat_tool_hide_bar_color",
