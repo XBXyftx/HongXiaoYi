@@ -82,7 +82,7 @@ const sessionConfig: rcp.SessionConfiguration = {
     }
   }
 }
-const date = Date.now()
+const date = `${Date.now()}${Math.floor(Math.random()*1000)}`
 
 export function requestCozeAi() {
   const ai: ICoZePostBody = {
