@@ -24,7 +24,6 @@ const currentMsg: ViewMessageModel = AppStorageV2.connect(ViewMessageModel, MSG,
  */
 const historyMessageList: HistoryMessageList =
   AppStorageV2.connect(HistoryMessageList, MESSAGE_LIST, () => new HistoryMessageList())!
-// let bufferZone = AppStorageV2.connect(String,STRING_BUFFER_ZONE,()=>'')!
 
 const ON_DATA_RECEIVE = 'onDataReceive:  ';
 const sessionConfig: rcp.SessionConfiguration = {
@@ -82,7 +81,6 @@ export function requestCozeAi() {
     workflow_id: '7487986803871760399',
     additional_messages: historyMessageList.getList(),
     parameters: new Map<string, string>([['CONVERSATION_NAME', 'HXY' + date]]),
-    // parameters:{},
     conversation_id: 'abc'+date
   }
   promptAction.showToast({
@@ -102,8 +100,6 @@ export function requestCozeAi() {
       message.content = currentMsg.content!
       historyMessageList.addMessage(message)
       logger.warn('requestCozeAi:  ' + '历史添加完毕')
-      // // currentMsg.hasEnd = true
-      // logger.info('requestCozeAi:  ' + '数据传输已完成')
       session.close()
       logger.warn('requestCozeAi:  ' + 'session已关闭')
     })
