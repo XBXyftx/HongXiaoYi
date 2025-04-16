@@ -73,6 +73,7 @@ export struct ContentComp {
                   Row() {
                     Blank()
                     Text(msg.item.content)
+                      .fontColor($r('app.color.chat_ai_fontcolor'))
                       .fontSize(16)
                       .backgroundColor($r('app.color.chat_human_bg_color'))
                       .padding(10)

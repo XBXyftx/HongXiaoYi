@@ -1,7 +1,7 @@
 import { logger } from 'common';
 import { CozeHistoryMessagesItem } from '..'
 
-const MESSAGE_LIST = 'MessageList:  '
+const MESSAGE_LIST = 'HistoryMessageList:  '
 
 /**
  * 扣子对话历史工具类

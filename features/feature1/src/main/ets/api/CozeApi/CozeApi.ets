@@ -45,40 +45,27 @@ const sessionConfig: rcp.SessionConfiguration = {
           const bufferFrom: Uint8Array = new Uint8Array(inComingData);
           const s = new util.TextDecoder().decodeToString(bufferFrom);
           logger.info('onDataReceive原始数据：  ' + s)
+          const lines:string[] = s.split('\n');
+          let deltaDataLines:number[]=[]
+          typeStringBuffer.rcpEnd = false
           try {
-            typeStringBuffer.rcpEnd = false
-            let secondIsCompleted: boolean = false
-            if (s.includes('conversation.message.delta')) {
-              s.split('data: ').forEach((item: string, index) => {
-                if (index === 1) {
-                  const data = item.split('event: ')[0]
-                  const secondEvent = item.split('event: ')[1]
-                  if (secondEvent.includes('message.completed')) {
-                    secondIsCompleted = true
-                    logger.warn('onDataReceive 第二个事件为completed')
-                  }
-                  logger.info('____________________________')
-                  logger.info('读取到的data： ' + data)
-                  const message_data = JSON.parse(data) as IHXYConversationMessage_DeltaData
-                  const dataWaitToAdd = message_data.content.replace('null', '')
-                  logger.info('onDataReceive 向字符缓冲区写入： ' + dataWaitToAdd)
-                  typeStringBuffer.strAdd(dataWaitToAdd)
-                  typeStringBuffer.start()
-                  logger.info('msgModel.hasEnd= ' + currentMsg.hasEnd)
-                  logger.info('____________________________')
-                } else if (index === 2 && !secondIsCompleted) {
-                  const data = item
-                  logger.info('____________________________')
-                  logger.info('读取到的data： ' + data)
-                  const message_data = JSON.parse(data) as IHXYConversationMessage_DeltaData
-                  logger.info('onDataReceive 向字符缓冲区写入： ' + message_data.content)
-                  const dataWaitToAdd = message_data.content.replace('null', '')
-                  typeStringBuffer.strAdd(dataWaitToAdd)
-                  logger.info('msgModel.hasEnd= ' + currentMsg.hasEnd)
-                  logger.info('____________________________')
-                }
-              })
-            }
+            lines.forEach((item:string,index:number)=>{
+              if (item.includes('conversation.message.delta')) {
+                deltaDataLines.push(index+1)
+              }
+            })
+            lines.forEach((item:string,index:number)=>{
+              if (deltaDataLines.includes(index)) {
+                const data = item.split('data: ')[1]
+                const message_data = (JSON.parse(data) as IHXYConversationMessage_DeltaData).content.replace('null', '')
+                logger.info('________________________________________________________')
+                logger.info('onDataReceive data='+data)
+                typeStringBuffer.strAdd(message_data)
+                typeStringBuffer.start()
+                logger.info('onDataReceive 向字符缓冲区写入： ' + message_data)
+                logger.info('________________________________________________________')
+              }
+            })
           } catch (err) {
             logger.error(ON_DATA_RECEIVE + 'onDataReceive捕获异常: ' + err)
           }
