@@ -81,7 +81,9 @@ export function requestCozeAi() {
   const ai: ICoZePostBody = {
     workflow_id: '7487986803871760399',
     additional_messages: historyMessageList.getList(),
-    parameters: new Map<string, string>([['CONVERSATION_NAME', 'HXY' + date]])
+    parameters: new Map<string, string>([['CONVERSATION_NAME', 'HXY' + date]]),
+    // parameters:{},
+    conversation_id: 'abc'+date
   }
   promptAction.showToast({
     message: '发送请求成功'

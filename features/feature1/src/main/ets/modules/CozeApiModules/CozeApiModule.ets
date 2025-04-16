@@ -15,6 +15,7 @@ export interface ICoZePostBody<K = string, V = string> {
    * 如果 parameters 中未指定 CONVERSATION_NAME 或其他输入参数，则使用参数默认值运行对话流；如果指定了这些参数，则使用指定值。
    */
   parameters: Map<K, V>
+  // parameters:object
   /**
    * 需要关联的扣子应用 ID。调用对话流时，必须指定 app_id 或 bot_id，便于模型调用智能体或应用的数据库、变量等数据处理问题。
    */
