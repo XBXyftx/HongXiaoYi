@@ -54,9 +54,9 @@ struct StartPage {
     }
     .expandSafeArea()
     .linearGradient({
-      direction: GradientDirection.Bottom,
+      direction: GradientDirection.LeftBottom,
       colors: [[$r('app.color.total_main_linearGradient_0'), 0],
-        [$r('app.color.total_main_linearGradient_0point5'), 0.5]]
+        [$r('app.color.total_main_linearGradient_0point5'), 0.7]]
     })
     .width('100%')
     .height('100%')

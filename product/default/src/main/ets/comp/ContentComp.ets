@@ -1,6 +1,8 @@
 import { ViewMessageModel } from "feature1";
 import { MarkdownV2 } from '@lidary/markdown';
 import { animateParam } from "common";
+import { LengthMetrics } from "@kit.ArkUI";
+
 @ComponentV2
 export struct ContentComp {
   @Param @Require messages: ViewMessageModel[];
@@ -91,13 +93,7 @@ export struct ContentComp {
         .scrollBar(BarState.Off)
         .width('100%')
         .height('100%')
-        Column()
-          .width('100%')
-          .height(35)
-          .linearGradient({
-            direction:GradientDirection.Bottom,
-            colors:[[$r('app.color.chat_tool_hide_bar_color'),0],[$r('app.color.total_main_linearGradient_0point5'),1]]
-          })
+        .fadingEdge(true,{fadingEdgeLength:LengthMetrics.vp(50)})
       }
 
     }
