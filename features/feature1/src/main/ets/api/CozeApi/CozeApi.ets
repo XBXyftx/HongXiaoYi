@@ -28,7 +28,7 @@ const historyMessageList: HistoryMessageList =
 const ON_DATA_RECEIVE = 'onDataReceive:  ';
 const sessionConfig: rcp.SessionConfiguration = {
   headers: {
-    Authorization: "Bearer pat_n4dspAiKcFus7k7zaW9OC5fzGqlXuJWu4E6PWyTajDBvqUfkhzpOVUljUKL6CPv7",
+    Authorization: "Bearer pat_Jw6hXqTEOZiHRpPf4Lk7ybu5s3R9lA9EJeqFunN0zq5tQivMqUAj4noDKq0ZdRPJ",
     "Content-Type": "application/json"
   },
   requestConfiguration: {
