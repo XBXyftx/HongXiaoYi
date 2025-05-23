@@ -1,5 +1,5 @@
 import { logger } from 'common'
-import { ViewMessageModel } from '..';
+import { ViewMessageModel } from '../../modules';
 import { AppStorageV2 } from '@kit.ArkUI';
 import { MSG } from '../../constants';
 
