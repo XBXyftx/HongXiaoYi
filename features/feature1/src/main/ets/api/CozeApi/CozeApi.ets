@@ -5,7 +5,6 @@ import {
   IHXYConversationMessage_DeltaData,
   ViewMessageModel,
   HistoryMessageList,
-  typeStringBuffer
 } from "../../modules";
 import { AppStorageV2, promptAction } from "@kit.ArkUI";
 import { rcp } from "@kit.RemoteCommunicationKit";
@@ -13,6 +12,7 @@ import { util } from "@kit.ArkTS";
 import { BusinessError } from "@kit.BasicServicesKit";
 import { logger } from 'common'
 import { MESSAGE_LIST, MSG, CONTENT_TYPE_STRING, STRING_BUFFER_ZONE } from '../../constants/index'
+import { typeStringBuffer } from "../../utils";
 
 
 /**

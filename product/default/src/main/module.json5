@@ -9,6 +9,12 @@
       "tablet",
       "2in1"
     ],
+    "metadata": [ // 配置信息如下
+      {
+        "name": "client_id",
+        "value": "6917574017089572345"
+      }
+    ],
     "requestPermissions": [
       {"name": "ohos.permission.INTERNET"}
     ],

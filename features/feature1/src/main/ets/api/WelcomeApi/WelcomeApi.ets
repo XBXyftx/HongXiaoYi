@@ -1,7 +1,8 @@
 import { logger, WELCOME_WORD } from 'common'
-import { typeStringBuffer, ViewMessageModel } from '../../modules'
+import {ViewMessageModel } from '../../modules'
 import { AppStorageV2 } from '@kit.ArkUI'
 import { MSG } from '../../constants'
+import { typeStringBuffer } from '../../utils'
 
 const WELCOME_API_LOG_TAG = 'WelcomeApi:  '
 @ObservedV2
