@@ -35,7 +35,7 @@ struct Main {
     }
   }
 
-  // aboutToAppear(): void {
+  // aboutToAppear(): void {logg
   //   this.navPathStuck.pushPath({name:NavDests.CHAT})
   // }
 
